@@ -11,9 +11,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
-
+app.MapHealthChecks("/health");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -31,7 +32,7 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
-    services.Configure<UsersApiOptions>(builder.Configuration.GetSection("UserApiOptions"));
+    services.Configure<UsersApiOptions>(builder.Configuration.GetSection("UsersApiOptions"));
     services.AddTransient<IUserService, UserService>();
     services.AddHttpClient<IUserService, UserService>();
 }
